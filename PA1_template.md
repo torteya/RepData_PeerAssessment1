@@ -71,7 +71,7 @@ With this, we can now create a histogram of total steps taken per day:
 
 ```r
 df1 <- data.frame(steps=datesums)
-h <- ggplot(df1, aes(x=steps)) + geom_histogram(bin=1000, fill="#9999CC", color="black") + ggtitle("Steps per day")+xlab("Steps")+ylab("Frequency")
+h <- ggplot(df1, aes(x=steps)) + geom_histogram(bin=1000, fill="#9999CC", color="black") + ggtitle("Steps per day (complete data set)")+xlab("Steps")+ylab("Frequency")
 plot(h)
 ```
 
@@ -261,7 +261,33 @@ sum(!complete.cases(fulldata))  #Check if there are any NAs still left in the fu
 ## [1] 0
 ```
 
-So our _fulldata_ set has no NAs left.
+So our _fulldata_ set has no NAs left. 
+
+Now we look again at the histogram for steps taken per day, but using this new _full_ dataset:
+
+
+```r
+datesums2 <- tapply(fulldata$steps, fulldata$date, sum)
+df12 <- data.frame(steps=datesums2)
+h2 <- ggplot(df12, aes(x=steps)) + geom_histogram(bin=1000, fill="#9999CC", color="black") + ggtitle("Steps per day (full dataset)")+xlab("Steps")+ylab("Frequency")
+plot(h2)
+```
+
+![plot of chunk datesums2](figure/datesums2-1.png) 
+
+We can also look at the _median_ and _mean_ for this full dataset. We will obtain them using _summary_, for brevity:
+
+
+```r
+round(summary(datesums2, digits=7))
+```
+
+```
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##      41    9819   10766   10766   12811   21194
+```
+
+So, we see that there was no change in the _mean_ value of steps per day (10766), and there was a very small change(from 10765 to 10766) in the _median_. We can conclude that using the corresponding interval-agerage value to substitute missing values had a very small effect in the estimates for the daily number of steps.
 
 ### Are there differences in activity patterns between weekdays and weekends?
 
